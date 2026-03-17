@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Al Maad Al Islami — Burial Forms</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #1D9E75;
+      --green-dark: #0F6E56;
+      --green-light: #E1F5EE;
+      --green-mid: #9FE1CB;
+      --text: #1a1a1a;
+      --text-secondary: #5a5a5a;
+      --border: #e0e0e0;
+      --bg: #f5f5f0;
+      --card: #ffffff;
+      --input-bg: #ffffff;
+      --secondary-bg: #f9f9f7;
+      --radius: 10px;
+      --radius-lg: 14px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text: #f0f0f0;
+        --text-secondary: #aaaaaa;
+        --border: #333333;
+        --bg: #111111;
+        --card: #1c1c1c;
+        --input-bg: #1c1c1c;
+        --secondary-bg: #252525;
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    header {
+      max-width: 680px;
+      margin: 0 auto 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--green-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-circle svg { width: 26px; height: 26px; }
+
+    .header-text h1 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .header-text p {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .wrap {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .progress-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 1.25rem;
+    }
+
+    .step-dot {
+      flex: 1;
+      height: 5px;
+      border-radius: 3px;
+      background: var(--border);
+      transition: background 0.3s;
+    }
+
+    .step-dot.active { background: var(--green); }
+    .step-dot.done { background: var(--green-mid); }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--green);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      line-height: 1.3;
+    }
+
+    .field { margin-bottom: 1rem; }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      font-size: 14px;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--input-bg);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      font-family: inherit;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.12);
+    }
+
+    .field textarea { resize: vertical; min-height: 80px; }
+
+    .row { display: grid; gap: 12px; }
+    .row-2 { grid-template-columns: 1fr 1fr; }
+    .row-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    @media (max-width: 480px) {
+      .row-2, .row-3 { grid-template-columns: 1fr; }
+    }
+
+    .checkbox-group { display: flex; flex-direction: column; gap: 10px; }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text);
+      cursor: pointer;
+      padding: 8px 10px;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .check-item:hover { background: var(--secondary-bg); border-color: var(--border); }
+
+    .check-item input[type=checkbox],
+    .check-item input[type=radio] {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--green);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.25rem 0;
+    }
+
+    .charge-box {
+      background: var(--green-light);
+      border: 1px solid var(--green-mid);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
+      color: var(--green-dark);
+    }
+
+    .charge-box .charge-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .charge-box .charge-amount { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .charge-box .charge-note { font-size: 12px; opacity: 0.8; }
+
+    .rules-scroll {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem 1rem;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 1.25rem;
+      background: var(--secondary-bg);
+    }
+
+    .rule-item {
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.6;
+      display: flex;
+      gap: 8px;
+    }
+
+    .rule-item:last-child { border-bottom: none; }
+    .rule-num { font-weight: 700; color: var(--green); flex-shrink: 0; min-width: 18px; }
+
+    .agree-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text);
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--secondary-bg);
+      margin-bottom: 1.25rem;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .agree-check:has(input:checked) { border-color: var(--green); background: var(--green-light); }
+
+    .agree-check input[type=checkbox] {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--green);
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn {
+      padding: 10px 22px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      transition: background 0.15s, transform 0.1s;
+      font-family: inherit;
+    }
+
+    .btn:hover { background: var(--secondary-bg); }
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+
+    .btn-primary:hover { background: var(--green-dark); border-color: var(--green-dark); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .step-count { font-size: 13px; color: var(--text-secondary); }
+
+    .success-wrap {
+      text-align: center;
+      padding: 2rem 0;
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--green-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      font-size: 28px;
+    }
+
+    .info-box {
+      background: var(--secondary-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-align: left;
+      line-height: 1.7;
+      margin-top: 1.25rem;
+    }
+
+    .info-box strong { color: var(--text); display: block; margin-bottom: 4px; }
+
+    .print-btn {
+      margin-top: 1.25rem;
+    }
+
+    @media print {
+      body { padding: 0; background: white; }
+      .nav, .progress-bar, header, .print-btn { display: none !important; }
+      .card { border: none; padding: 0; box-shadow: none; }
+      #step-0, #step-1, #step-2, #step-3, #step-done { display: block !important; page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-circle">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#1D9E75"/>
+      </svg>
+    </div>
+    <div class="header-text">
+      <h1>Al Maad Al Islami Inc.</h1>
+      <p>Daarul Barzakh Maqbarah — Burial Registration Forms</p>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="progress-bar">
+      <div class="step-dot active" id="dot-0"></div>
+      <div class="step-dot" id="dot-1"></div>
+      <div class="step-dot" id="dot-2"></div>
+      <div class="step-dot" id="dot-3"></div>
+    </div>
+
+    <div class="card">
+
+      <!-- Step 1: Next of Kin / POA -->
+      <div id="step-0">
+        <div class="section-label">Step 1 of 4</div>
+        <div class="section-title">Next of kin / power of attorney</div>
+
+        <div class="field">
+          <label>Your full name</label>
+          <input type="text" id="nok-name" placeholder="First, middle, last">
+        </div>
+
+        <div class="field">
+          <label>Your relationship to the deceased</label>
+          <div class="checkbox-group">
+            <label class="check-item"><input type="radio" name="relationship" value="Wife (legally married)"> Wife (legally married)</label>
+            <label class="check-item"><input type="radio" name="relationship" value="Husband (legally married)"> Husband (legally married)</label>
+            <label class="check-item"><input type="radio" name="relationship" value="Son by blood relation"> Son by blood relation</label>
+            <label class="check-item"><input type="radio" name="relationship" value="Daughter by blood relation"> Daughter by blood relation</label>
+            <label class="check-item"><input type="radio" name="relationship" value="Father by blood relation"> Father by blood relation</label>
+            <label class="check-item"><input type="radio" name="relationship" value="Mother by blood relation"> Mother by blood relation</label>
+            <label class="check-item"><input type="radio" name="relationship" value="Brother by blood relation"> Brother by blood relation</label>
+            <label class="check-item"><input type="radio" name="relationship" value="Sister by blood relation"> Sister by blood relation</label>
+            <label class="check-item"><input type="radio" name="relationship" value="Cousin by blood relation"> Cousin by blood relation</label>
+            <label class="check-item"><input type="radio" name="relationship" value="Other"> Other</label>
+          </div>
+        </div>
+
+        <div class="field" id="other-field" style="display:none">
+          <label>Specify relationship</label>
+          <input type="text" id="nok-other" placeholder="Describe your relationship">
+        </div>
+
+        <div class="field">
+          <label>Full name of deceased</label>
+          <input type="text" id="nok-deceased" placeholder="Mr. / Ms. / Mrs. — full name">
+        </div>
+
+        <div class="field">
+          <label>Authorized representative (if different from you)</label>
+          <input type="text" id="nok-rep" placeholder="Full name, or leave blank if same as above">
+        </div>
+      </div>
+
+      <!-- Step 2: Death Certificate Worksheet -->
+      <div id="step-1" style="display:none">
+        <div class="section-label">Step 2 of 4</div>
+        <div class="section-title">Georgia death certificate worksheet</div>
+
+        <div class="row row-3">
+          <div class="field"><label>First name</label><input type="text" id="d-first"></div>
+          <div class="field"><label>Middle name</label><input type="text" id="d-mid"></div>
+          <div class="field"><label>Last name</label><input type="text" id="d-last"></div>
+        </div>
+
+        <div class="row row-2">
+          <div class="field">
+            <label>Sex</label>
+            <select id="d-sex">
+              <option value="">Select</option>
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </div>
+          <div class="field"><label>Date of birth</label><input type="date" id="d-dob"></div>
+        </div>
+
+        <div class="row row-2">
+          <div class="field"><label>Date of death</label><input type="date" id="d-dod"></div>
+          <div class="field"><label>Social security number</label><input type="text" id="d-ssn" placeholder="XXX-XX-XXXX"></div>
+        </div>
+
+        <div class="row row-2">
+          <div class="field">
+            <label>Marital status at time of death</label>
+            <select id="d-marital">
+              <option value="">Select</option>
+              <option>Married</option>
+              <option>Married, but Separated</option>
+              <option>Widowed</option>
+              <option>Divorced</option>
+              <option>Never Married</option>
+              <option>Not Obtainable</option>
+              <option>Unknown</option>
+            </select>
+          </div>
+          <div class="field"><label>Spouse name (if applicable)</label><input type="text" id="d-spouse" placeholder="Name at first marriage if wife"></div>
+        </div>
+
+        <div class="field"><label>Birth place (city, state or foreign country)</label><input type="text" id="d-birthplace"></div>
+
+        <div class="row row-2">
+          <div class="field"><label>Father's full name</label><input type="text" id="d-father"></div>
+          <div class="field"><label>Mother's name (prior to first marriage)</label><input type="text" id="d-mother"></div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="field"><label>Last residential address (street and number)</label><input type="text" id="d-addr"></div>
+        <div class="row row-3">
+          <div class="field"><label>City or town</label><input type="text" id="d-city"></div>
+          <div class="field"><label>County</label><input type="text" id="d-county"></div>
+          <div class="field"><label>Zip code</label><input type="text" id="d-zip"></div>
+        </div>
+
+        <div class="field">
+          <label>Ever served in US Armed Forces?</label>
+          <select id="d-armed">
+            <option value="">Select</option>
+            <option>Yes</option>
+            <option>No</option>
+            <option>Unknown</option>
+          </select>
+        </div>
+
+        <hr class="divider">
+
+        <div class="row row-2">
+          <div class="field"><label>Usual occupation</label><input type="text" id="d-occ" placeholder="Type of work during most of working life"></div>
+          <div class="field"><label>Kind of business / industry</label><input type="text" id="d-industry"></div>
+        </div>
+        <div class="field"><label>Employer</label><input type="text" id="d-employer"></div>
+
+        <div class="field">
+          <label>Highest level of education</label>
+          <select id="d-edu">
+            <option value="">Select</option>
+            <option>8th grade or less</option>
+            <option>9th - 12th grade, no diploma</option>
+            <option>High school graduate or GED</option>
+            <option>Some college credit, but no degree</option>
+            <option>Associate degree (AA, AS)</option>
+            <option>Bachelor's degree (BA, AB, BS)</option>
+            <option>Master's degree (MA, MS, MBA)</option>
+            <option>Doctorate (PhD, EdD)</option>
+            <option>Unknown</option>
+          </select>
+        </div>
+
+        <div class="row row-2">
+          <div class="field">
+            <label>Hispanic origin</label>
+            <select id="d-hispanic">
+              <option value="">Select</option>
+              <option>No, not Spanish/Hispanic/Latino</option>
+              <option>Yes, Mexican/Mexican American/Chicano</option>
+              <option>Yes, Puerto Rican</option>
+              <option>Yes, Cuban</option>
+              <option>Yes, other Spanish/Hispanic/Latino</option>
+              <option>Unknown</option>
+              <option>Refused</option>
+              <option>Not obtainable</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Race</label>
+            <select id="d-race">
+              <option value="">Select</option>
+              <option>White</option>
+              <option>Black or African American</option>
+              <option>Chinese</option>
+              <option>Filipino</option>
+              <option>Vietnamese</option>
+              <option>Korean</option>
+              <option>Japanese</option>
+              <option>Native Hawaiian</option>
+              <option>Samoan</option>
+              <option>Guamanian or Chamorro</option>
+              <option>Asian Indian</option>
+              <option>American Indian or Alaskan Native</option>
+              <option>Other</option>
+              <option>Unknown</option>
+              <option>Refused</option>
+              <option>Not obtainable</option>
+            </select>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="field">
+          <label>Place of death</label>
+          <select id="d-place">
+            <option value="">Select</option>
+            <option>Inpatient (Hospital)</option>
+            <option>Emergency Room / Outpatient</option>
+            <option>Dead on Arrival</option>
+            <option>Hospice facility</option>
+            <option>Nursing home / Long term care facility</option>
+            <option>Decedent's Home</option>
+            <option>Other</option>
+            <option>Unknown</option>
+          </select>
+        </div>
+
+        <div class="row row-2">
+          <div class="field"><label>Facility or location name</label><input type="text" id="d-facility" placeholder="If not institution, give address"></div>
+          <div class="field"><label>County of death</label><input type="text" id="d-death-county"></div>
+        </div>
+        <div class="field"><label>City or town, state, zip code of death</label><input type="text" id="d-death-city"></div>
+
+        <hr class="divider">
+
+        <div class="field">
+          <label>Method of disposition</label>
+          <select id="d-disposition">
+            <option value="">Select</option>
+            <option>Burial</option>
+            <option>Cremation</option>
+            <option>Donation</option>
+            <option>Removal from state</option>
+            <option>Entombment</option>
+            <option>Mausoleum</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Place of disposition (cemetery / crematory name and address)</label><input type="text" id="d-disp-place"></div>
+        <div class="field"><label>Date of disposition</label><input type="date" id="d-disp-date"></div>
+
+        <hr class="divider">
+
+        <div class="row row-2">
+          <div class="field"><label>Informant's full name</label><input type="text" id="d-informant"></div>
+          <div class="field"><label>Relationship to deceased</label><input type="text" id="d-informant-rel"></div>
+        </div>
+        <div class="field"><label>Informant's mailing address</label><input type="text" id="d-informant-addr" placeholder="Street, city, state, zip"></div>
+      </div>
+
+      <!-- Step 3: Cemetery Lot Application -->
+      <div id="step-2" style="display:none">
+        <div class="section-label">Step 3 of 4</div>
+        <div class="section-title">Cemetery lot application</div>
+
+        <div class="charge-box">
+          <div class="charge-title">Cemetery charges — payable in full before authorization</div>
+          <div class="charge-amount">Adult: $1,650 &nbsp;|&nbsp; Children under 5: $1,150</div>
+          <div class="charge-note">Includes: plot, ghusl/shroud, opening &amp; closing of grave, granite marker, wood plywood frame &amp; maintenance</div>
+        </div>
+
+        <div class="section-label" style="margin-bottom:8px">Deceased information</div>
+        <div class="row row-3">
+          <div class="field"><label>Last name</label><input type="text" id="dec-last"></div>
+          <div class="field"><label>M.I.</label><input type="text" id="dec-mi" maxlength="2"></div>
+          <div class="field"><label>First name</label><input type="text" id="dec-first"></div>
+        </div>
+        <div class="row row-2">
+          <div class="field"><label>Date of birth</label><input type="date" id="dec-dob"></div>
+          <div class="field">
+            <label>Gender</label>
+            <select id="dec-sex">
+              <option value="">Select</option>
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </div>
+        </div>
+        <div class="row row-2">
+          <div class="field"><label>Marital status</label>
+            <select id="dec-marital">
+              <option value="">Select</option>
+              <option>Single</option>
+              <option>Married</option>
+              <option>Widowed</option>
+              <option>Divorced</option>
+            </select>
+          </div>
+          <div class="field"><label>Date of death</label><input type="date" id="dec-dod"></div>
+        </div>
+        <div class="field"><label>Time of death</label><input type="time" id="dec-tod"></div>
+        <div class="field"><label>Cause of death</label><input type="text" id="dec-cause"></div>
+        <div class="field"><label>Last address</label><input type="text" id="dec-addr"></div>
+        <div class="row row-2">
+          <div class="field"><label>City</label><input type="text" id="dec-city"></div>
+          <div class="field"><label>State / Zip</label><input type="text" id="dec-statezip"></div>
+        </div>
+        <div class="field"><label>Place of death</label><input type="text" id="dec-death-place"></div>
+        <div class="row row-2">
+          <div class="field"><label>City</label><input type="text" id="dec-death-city"></div>
+          <div class="field"><label>State / Zip</label><input type="text" id="dec-death-statezip"></div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="section-label" style="margin-bottom:8px">Applicant information</div>
+        <div class="row row-3">
+          <div class="field"><label>Last name</label><input type="text" id="a-last"></div>
+          <div class="field"><label>M.I.</label><input type="text" id="a-mi" maxlength="2"></div>
+          <div class="field"><label>First name</label><input type="text" id="a-first"></div>
+        </div>
+        <div class="field"><label>Address</label><input type="text" id="a-addr"></div>
+        <div class="row row-3">
+          <div class="field"><label>City</label><input type="text" id="a-city"></div>
+          <div class="field"><label>State</label><input type="text" id="a-state"></div>
+          <div class="field"><label>Zip</label><input type="text" id="a-zip"></div>
+        </div>
+        <div class="row row-2">
+          <div class="field"><label>Phone</label><input type="tel" id="a-phone"></div>
+          <div class="field"><label>Cell</label><input type="tel" id="a-cell"></div>
+        </div>
+        <div class="field"><label>Email</label><input type="email" id="a-email"></div>
+        <div class="field"><label>Relationship to deceased</label><input type="text" id="a-rel"></div>
+
+        <hr class="divider">
+
+        <div class="field">
+          <label>Funeral home</label>
+          <select id="a-funeral">
+            <option value="">Select a funeral home</option>
+            <option>Janaza Services of GA, Inc. — 2920 Woodbine Hill Way, Norcross, GA 30071 | (678) 575-8939</option>
+            <option>Hines Home of Funerals, Inc. — 595 W Lake Ave NW, Atlanta, GA 30318 | (404) 792-2400</option>
+            <option>Other (discuss with Al Maad Al Islami)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Payment method</label>
+          <select id="a-payment">
+            <option value="">Select</option>
+            <option>Cash</option>
+            <option>Check</option>
+          </select>
+        </div>
+        <div class="field" id="check-num-field" style="display:none">
+          <label>Check number</label>
+          <input type="text" id="a-checknum">
+        </div>
+      </div>
+
+      <!-- Step 4: Rules & Regulations -->
+      <div id="step-3" style="display:none">
+        <div class="section-label">Step 4 of 4</div>
+        <div class="section-title">Rules &amp; regulations — acknowledgment</div>
+
+        <p style="font-size:13px;color:var(--text-secondary);margin-bottom:1rem;line-height:1.6">Please read and agree to the burial rules for Daarul Barzakh Maqbarah before signing.</p>
+
+        <div class="rules-scroll">
+          <div class="rule-item"><span class="rule-num">1.</span> The Daarul Barzakh Maqbarah is the sole property of Al Maad Al Islami Inc. All rules must be agreed upon and strictly observed by all visitors.</div>
+          <div class="rule-item"><span class="rule-num">2.</span> No plots will be deeded to anyone before or after burial. The entire cemetery property will continue to remain under the ownership of Al Maad Al Islami Inc.</div>
+          <div class="rule-item"><span class="rule-num">3.</span> Upon application and payment of dues, Al Maad Al Islami Inc. will allocate a cemetery lot and authorize the burial. Al Maad Al Islami reserves the right to deny authorization without reason. Reservations for specific lot locations or family lots are not allowed.</div>
+          <div class="rule-item"><span class="rule-num">4.</span> All burials shall take place under the supervision of an authorized Al Maad Al Islami representative. The washed and prepared body must be received at the cemetery no later than one hour before sunset.</div>
+          <div class="rule-item"><span class="rule-num">5.</span> No caskets shall be used for burial. The body will be buried in a shroud and a pressure-treated plywood or alternative wooden material to create a small cavity before backfilling the grave.</div>
+          <div class="rule-item"><span class="rule-num">6.</span> The top of all graves shall initially be raised no more than 1 inch and will be grassed once the soil settles and the top becomes flat.</div>
+          <div class="rule-item"><span class="rule-num">7.</span> Graves will be marked with a standard stone marker, flushed with the ground, engraved with the name and date of birth and death of the deceased. Al Maad Al Islami Inc. will provide and install this marker.</div>
+          <div class="rule-item"><span class="rule-num">8.</span> Unauthorized markers, monuments, permanent or temporary decorations, flowers, plants, and shrubs are not permitted. Any violation will result in removal at the family's cost.</div>
+          <div class="rule-item"><span class="rule-num">9.</span> Picture taking and/or videotaping of any kind during burial is strictly prohibited. Al Maad Al Islami reserves the right to refuse any ritual before, during, or after burial if it has no grounds in Islamic jurisprudence.</div>
+          <div class="rule-item"><span class="rule-num">10.</span> Children under 15 years must be accompanied by adults. No pets are allowed. Parking is allowed only in designated areas.</div>
+          <div class="rule-item"><span class="rule-num">11.</span> The cemetery will remain gated and locked except during published times when it is open for family/visitors. Out-of-town visitors may contact Al Maad Al Islami Inc. for permission to visit at other times.</div>
+          <div class="rule-item"><span class="rule-num">12.</span> Al Maad Al Islami Inc. shall not be responsible for any damage or loss to property or person while on cemetery premises and reserves the right to refuse entry to any person.</div>
+        </div>
+
+        <label class="agree-check">
+          <input type="checkbox" id="agree-rules">
+          <span>I have read, agreed and promise to comply with the above rules and regulations for burial at all times. I further promise to comply with any future rules and regulations which may be set forth by Al Maad Al Islami Inc. or any government agency.</span>
+        </label>
+
+        <div class="field"><label>Print name</label><input type="text" id="r-name"></div>
+        <div class="row row-2">
+          <div class="field"><label>Relationship to deceased</label><input type="text" id="r-rel"></div>
+          <div class="field"><label>Phone</label><input type="tel" id="r-phone"></div>
+        </div>
+        <div class="field"><label>Address</label><input type="text" id="r-addr"></div>
+        <div class="field"><label>Date</label><input type="date" id="r-date"></div>
+      </div>
+
+      <!-- Success -->
+      <div id="step-done" style="display:none">
+        <div class="success-wrap">
+          <div class="success-icon">✓</div>
+          <div class="section-title">All forms completed</div>
+          <p style="font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:0.5rem">All four sections have been filled out successfully. Please print this page and bring it with you, or contact Al Maad Al Islami Inc. to confirm next steps.</p>
+          <div class="info-box">
+            <strong>Al Maad Al Islami Inc. — Daarul Barzakh Maqbarah</strong>
+            50-1 County Line Rd. W, Covington, GA 30016<br>
+            Masjid At Taqwa — 2674 Woodwin Rd, Doraville, GA 30360<br>
+            Phone: <a href="tel:6788969257" style="color:var(--green)">678-896-9257</a><br>
+            Email: <a href="mailto:Mohammad30360@gmail.com" style="color:var(--green)">Mohammad30360@gmail.com</a>
+          </div>
+          <button class="btn btn-primary print-btn" onclick="window.print()">Print all forms</button>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="nav" id="nav-btns">
+        <button class="btn" id="btn-back" onclick="go(-1)" style="visibility:hidden">← Back</button>
+        <span class="step-count" id="step-count">Step 1 of 4</span>
+        <button class="btn btn-primary" id="btn-next" onclick="go(1)">Next →</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let cur = 0;
+    const total = 4;
+
+    function go(dir) {
+      document.getElementById('step-' + cur).style.display = 'none';
+      const dot = document.getElementById('dot-' + cur);
+      dot.classList.remove('active');
+      dot.classList.add('done');
+
+      cur += dir;
+
+      if (cur >= total) {
+        document.getElementById('step-done').style.display = 'block';
+        document.getElementById('nav-btns').style.display = 'none';
+        for (let i = 0; i < total; i++) {
+          document.getElementById('dot-' + i).classList.add('done');
+          document.getElementById('dot-' + i).classList.remove('active');
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      if (cur < 0) { cur = 0; }
+
+      document.getElementById('step-' + cur).style.display = 'block';
+      document.getElementById('dot-' + cur).classList.add('active');
+      document.getElementById('dot-' + cur).classList.remove('done');
+
+      document.getElementById('btn-back').style.visibility = cur > 0 ? 'visible' : 'hidden';
+      document.getElementById('btn-next').textContent = cur === total - 1 ? 'Submit ✓' : 'Next →';
+      document.getElementById('step-count').textContent = 'Step ' + (cur + 1) + ' of ' + total;
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('input[name=relationship]').forEach(r => {
+      r.addEventListener('change', () => {
+        document.getElementById('other-field').style.display = r.value === 'Other' ? 'block' : 'none';
+      });
+    });
+
+    document.getElementById('a-payment').addEventListener('change', function () {
+      document.getElementById('check-num-field').style.display = this.value === 'Check' ? 'block' : 'none';
+    });
+  </script>
+
+</body>
+</html>
