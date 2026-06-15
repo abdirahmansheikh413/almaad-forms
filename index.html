@@ -887,12 +887,13 @@
           <div class="success-icon">✓</div>
           <h2 class="section-title" style="margin-bottom:.9rem">All forms completed</h2>
           <p class="success-msg">All four sections have been filled out. Please print this page and bring it with you, or contact Al Maad Al Islami Inc. to confirm next steps. May Allah grant ease and reward.</p>
+          <p id="email-status" class="success-msg" style="margin-top:.9rem;color:var(--pine);display:none"></p>
           <div class="info-box">
             <strong>Al Maad Al Islami Inc. — Daarul Barzakh Maqbarah</strong>
             50-1 County Line Rd. W, Covington, GA 30016<br>
             Masjid At Taqwa — 2674 Woodwin Rd, Doraville, GA 30360<br>
             Phone: <a href="tel:6788969257">678-896-9257</a><br>
-            Email: <a href="mailto:Mohammad30360@gmail.com">Mohammad30360@gmail.com</a>
+            Email: <a href="mailto:janazaservice1982@gmail.com">janazaservice1982@gmail.com</a>
           </div>
           <button class="btn btn-primary print-btn" onclick="window.print()">Print all forms</button>
         </div>
@@ -909,10 +910,23 @@
   </div>
 
   <script>
+    /* ════════════════════════════════════════════════════════════════
+       STEP 1 — PASTE YOUR FORMSPREE FORM ID BELOW.
+       Sign up free at https://formspree.io, create a form, and set its
+       recipient email to janazaservice1982@gmail.com. Formspree gives you
+       an endpoint like https://formspree.io/f/abcdwxyz — copy the part
+       after /f/. Confirm the first submission via the email Formspree
+       sends you, or it stays inactive. Until this is set, the form prints.
+       ════════════════════════════════════════════════════════════════ */
+    const FORMSPREE_ID = "YOUR_FORM_ID";
+
     let cur = 0;
     const total = 4;
 
     function go(dir) {
+      // Final step: send the email instead of just advancing.
+      if (dir === 1 && cur === total - 1) { submitForm(); return; }
+
       document.getElementById('step-' + cur).style.display = 'none';
       const dot = document.getElementById('dot-' + cur);
       dot.classList.remove('active');
@@ -920,16 +934,7 @@
 
       cur += dir;
 
-      if (cur >= total) {
-        document.getElementById('step-done').style.display = 'block';
-        document.getElementById('nav-btns').style.display = 'none';
-        for (let i = 0; i < total; i++) {
-          document.getElementById('dot-' + i).classList.add('done');
-          document.getElementById('dot-' + i).classList.remove('active');
-        }
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        return;
-      }
+      if (cur >= total) { showSuccess(); return; }
 
       if (cur < 0) { cur = 0; }
 
@@ -960,6 +965,87 @@
     document.getElementById('a-payment').addEventListener('change', function () {
       document.getElementById('check-num-field').style.display = this.value === 'Check' ? 'block' : 'none';
     });
+
+    /* ---- Collect every field, namespaced by section so duplicate
+            labels like "City" or "Last name" stay distinct in the email ---- */
+    function collectData() {
+      const data = {};
+      document.querySelectorAll('.step-pane').forEach(pane => {
+        if (pane.id === 'step-done') return;
+        const section = (pane.querySelector('.section-title') || {}).textContent || '';
+        const sec = section.trim();
+
+        // relationship radio (Step 1)
+        const rel = pane.querySelector('input[name=relationship]:checked');
+        if (rel) data[sec + ' — Relationship'] = rel.value;
+
+        pane.querySelectorAll('.field').forEach(f => {
+          const label = f.querySelector('label');
+          const input = f.querySelector('input, select, textarea');
+          if (!label || !input || input.type === 'radio') return;
+          let val = input.type === 'checkbox' ? (input.checked ? 'Yes' : 'No') : input.value;
+          if (val) data[sec + ' — ' + label.textContent.trim()] = val;
+        });
+      });
+      data['Rules & regulations'] = document.getElementById('agree-rules').checked
+        ? 'Read and agreed' : 'NOT agreed';
+
+      const name = (document.getElementById('nok-deceased').value
+        || (document.getElementById('dec-first').value + ' ' + document.getElementById('dec-last').value)).trim();
+      data['_subject'] = 'Burial registration' + (name ? ' — ' + name : '');
+      return data;
+    }
+
+    async function sendForm() {
+      if (!FORMSPREE_ID || FORMSPREE_ID === 'YOUR_FORM_ID') return false;
+      try {
+        const res = await fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(collectData())
+        });
+        return res.ok;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    async function submitForm() {
+      if (!document.getElementById('agree-rules').checked) {
+        alert('Please confirm you have read and agreed to the rules and regulations before submitting.');
+        return;
+      }
+      const btn = document.getElementById('btn-next');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      const sent = await sendForm();
+
+      const status = document.getElementById('email-status');
+      if (FORMSPREE_ID === 'YOUR_FORM_ID') {
+        status.style.display = 'none'; // email not configured yet
+      } else if (sent) {
+        status.textContent = 'A copy of this registration has been emailed to Al Maad Al Islami Inc.';
+        status.style.color = 'var(--pine)';
+        status.style.display = 'block';
+      } else {
+        status.textContent = 'The form could not be emailed automatically. Please print this page and deliver it, or call 678-896-9257.';
+        status.style.color = 'var(--gold)';
+        status.style.display = 'block';
+      }
+      showSuccess();
+    }
+
+    function showSuccess() {
+      document.getElementById('step-' + cur).style.display = 'none';
+      document.getElementById('step-done').style.display = 'block';
+      document.getElementById('nav-btns').style.display = 'none';
+      for (let i = 0; i < total; i++) {
+        document.getElementById('dot-' + i).classList.add('done');
+        document.getElementById('dot-' + i).classList.remove('active');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   </script>
 
 </body>
